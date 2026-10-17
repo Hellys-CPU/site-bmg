@@ -11,11 +11,23 @@ const BMG = {
   whatsapp: '',  // número do robô, com 55 e DDD. Ex.: '5511999998888'
   email: '',
   endereco: '',
-  regioes: []    // ex.: ['Grande São Paulo', 'Interior de SP']
+  regioes: [],   // ex.: ['Grande São Paulo', 'Interior de SP']
+  veiculos: ['Truck']  // tipos que a BMG tem: 'VUC', '3/4', 'Toco', 'Truck', 'Bitruck', 'Carreta'
 };
 ```
 
-Enquanto um dado estiver vazio, o site mostra o espaço marcado entre colchetes. Logo e fotos entram quando a BMG mandar.
+Enquanto um dado estiver vazio, o site mostra o espaço marcado entre colchetes. Os veículos aparecem nos serviços, nas perguntas e nos formulários, a partir da lista `veiculos`.
+
+## Arquivos
+
+| Arquivo | O que é |
+|---|---|
+| `index.html` | O site |
+| `bmg-logo.jpg` | Logo da BMG (topo, rodapé e baú do caminhão) |
+| `og-bmg.jpg` | Imagem que aparece quando o link é compartilhado no WhatsApp e nas redes |
+| `apple-touch-icon.png` | Ícone quando o site é salvo na tela do celular |
+
+Quando o domínio estiver no ar, troque `og-bmg.jpg` no `index.html` pelo endereço completo (`https://.../og-bmg.jpg`), para a imagem aparecer nos compartilhamentos.
 
 ## Como os formulários funcionam
 
