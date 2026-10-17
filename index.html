@@ -628,7 +628,7 @@ const BMG = {
     s += `<circle class="hub" cx="${cx}" cy="${cy}" r="12"/><text class="hub-l${base.cidade ? '' : ' vazio-t'}" x="${cx}" y="${cy + 40}" text-anchor="middle">${esc(hub)}</text>`;
     svg.innerHTML = s;
 
-    const ordem = pts.slice().sort((a, b) => a.km - b.km);
+    const ordem = vazio ? pts : pts.slice().sort((a, b) => a.km - b.km);
     svg.setAttribute('aria-label', vazio ? 'Mapa de cobertura da BMG, aguardando as cidades atendidas.'
       : `Mapa de cobertura: linhas saindo de ${base.cidade || 'a base da BMG'} até ${ordem.map(p => `${p.nome} (${p.km} km)`).join(', ')}.`);
     const lista = $('#kmlist');
