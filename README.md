@@ -12,11 +12,23 @@ const BMG = {
   email: '',
   endereco: '',
   regioes: [],   // ex.: ['Grande São Paulo', 'Interior de SP']
-  veiculos: ['Truck']  // tipos que a BMG tem: 'VUC', '3/4', 'Toco', 'Truck', 'Bitruck', 'Carreta'
+  veiculos: ['Truck'],  // tipos que a BMG tem: 'VUC', '3/4', 'Toco', 'Truck', 'Bitruck', 'Carreta'
+  base: { cidade: '', lat: null, lon: null },  // de onde os caminhões saem
+  destinos: []  // ex.: { cidade: 'Cidade', uf: 'SP', km: 95, lat: -22.90, lon: -47.06 }
 };
 ```
 
 Enquanto um dado estiver vazio, o site mostra o espaço marcado entre colchetes. Os veículos aparecem nos serviços, nas perguntas e nos formulários, a partir da lista `veiculos`.
+
+### Mapa de cobertura
+
+Em "Regiões atendidas" tem um mapa com linhas saindo da base até cada cidade, com a distância pela estrada. Ele se monta sozinho a partir de `base` e `destinos`:
+
+- `lat` e `lon`: no Google Maps, clique com o botão direito na cidade e copie os dois números (o primeiro é a latitude).
+- `km`: a distância pela estrada, da base até a cidade (a rota do Google Maps serve).
+- O mapa calcula a direção de cada cidade pela latitude e longitude, desenha os anéis de distância e posiciona os nomes sem cobrir os pontos.
+
+Enquanto `base` ou `destinos` estiverem vazios, o mapa mostra linhas de exemplo marcadas entre colchetes, sem nomes de cidade nem distâncias.
 
 ## Arquivos
 

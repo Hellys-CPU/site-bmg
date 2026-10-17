@@ -203,14 +203,39 @@ svg{display:block}
 .it .txt span{display:block;color:var(--blue-dim);margin-top:6px;font-size:16.5px;line-height:1.45}
 @media (max-width:860px){.svc{grid-template-columns:minmax(0,1fr)}.grp + .grp{padding-left:0;box-shadow:inset 0 3px 0 #fff;padding-top:24px;margin-top:24px}.grp:first-child{padding-right:0}}
 @media (max-width:480px){.it{grid-template-columns:72px minmax(0,1fr);gap:14px}.tile{width:72px;height:72px}.tile svg{width:58px;height:58px}.it b{font-size:21px}}
-.regions{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(20px,3vw,40px);align-items:center;margin-top:clamp(30px,4vw,48px)}
+.regions{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(20px,3vw,40px);align-items:center;margin-top:clamp(30px,4vw,48px)}
 .regions h3{font:900 clamp(1.6rem,3vw,2.2rem)/1.05 var(--sign)}
 .regions p{margin-top:10px;color:var(--ink-2)}
-.dests{list-style:none;margin:0;padding:clamp(16px,2.4vw,24px) clamp(18px,2.6vw,28px);background:var(--green);color:#fff;border-radius:18px;box-shadow:inset 0 0 0 4px #fff,0 24px 40px -30px rgba(0,0,0,.45);display:grid}
+.dests{list-style:none;margin:22px 0 0;padding:clamp(16px,2.4vw,24px) clamp(18px,2.6vw,28px);background:var(--green);color:#fff;border-radius:18px;box-shadow:inset 0 0 0 4px #fff,0 24px 40px -30px rgba(0,0,0,.45);display:grid}
 .dests li{display:grid;grid-template-columns:40px minmax(0,1fr);gap:16px;align-items:center;padding:12px 0;font:800 clamp(20px,2.2vw,26px)/1.15 var(--sign)}
 .dests li + li{box-shadow:inset 0 2px 0 rgba(255,255,255,.55)}
 .dests svg{width:36px;height:36px}
 @media (max-width:760px){.regions{grid-template-columns:minmax(0,1fr)}}
+
+/* ---------- Mapa de cobertura: asfalto, faixas pintadas e as linhas saindo da base ---------- */
+.raio{margin:0;background:var(--asphalt);color:#fff;border-radius:18px;box-shadow:inset 0 0 0 4px #fff,0 24px 40px -30px rgba(0,0,0,.45);padding:clamp(14px,2.2vw,24px)}
+.radar{width:100%;height:auto}
+.radar text{paint-order:stroke;stroke:var(--asphalt);stroke-width:5px;stroke-linejoin:round}
+.radar .ring{fill:none;stroke:var(--paint);stroke-opacity:.3;stroke-width:1.4;stroke-dasharray:6 9}
+.radar .ring-l{font:700 12px var(--mono);fill:var(--asph-dim)}
+.radar .ln{fill:none;stroke:var(--yellow);stroke-width:2.4;stroke-linecap:round}
+.radar .ln.vazio{stroke:var(--asph-dim);stroke-width:2;stroke-dasharray:3 8}
+.radar .dot{fill:#fff;stroke:var(--asphalt);stroke-width:2}
+.radar .city{font:800 17px var(--sign);fill:#fff}
+.radar .km{font:700 13px var(--mono);fill:var(--asph-dim)}
+.radar .hub{fill:var(--orange);stroke:#fff;stroke-width:3}
+.radar .hub-l{font:900 16px var(--sign);fill:#fff;letter-spacing:.06em}
+.radar .vazio-t text,.radar text.vazio-t{fill:var(--yellow)}
+.raio figcaption{margin-top:10px;font:700 12.5px/1.4 var(--mono);letter-spacing:.04em;color:var(--asph-dim)}
+.kmlist{display:none;list-style:none;margin:14px 0 0;padding:0;columns:2;column-gap:16px;font:700 14px/1.9 var(--mono);color:var(--asph-dim)}
+.kmlist li{break-inside:avoid}
+.kmlist b{font:800 15px var(--sign);color:#fff}
+.kmlist.vazio b{color:var(--yellow)}
+html.anim .radar .ln:not(.vazio){stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.1s var(--ease)}
+html.anim .radar .pt{opacity:0;transition:opacity .45s}
+html.anim .raio.seen .ln{stroke-dashoffset:0}
+html.anim .raio.seen .pt{opacity:1}
+@media (max-width:600px){.radar .city,.radar .km,.radar .ring-l{display:none}.radar .hub-l{font-size:28px}.kmlist{display:block}}
 
 /* ---------- Saídas: formulários ---------- */
 .exits{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,2.4vw,28px);align-items:start;margin-top:clamp(26px,3.4vw,40px)}
@@ -419,13 +444,18 @@ html.anim .ap.seen{opacity:1;transform:none}
       <div class="regions" id="regioes">
         <div>
           <h3>Regiões atendidas</h3>
-          <p>Se a sua rota passa por aqui, chame no WhatsApp ou peça a cotação.</p>
+          <p>Cada linha do mapa sai da base da BMG, em <span class="editar" id="base-nome">[cidade da base]</span>, até uma cidade atendida, com a distância aproximada pela estrada. Se a sua rota passa por aqui, chame no WhatsApp ou peça a cotação.</p>
+          <ul class="dests" id="regioes-lista" aria-label="Regiões atendidas">
+            <li><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3l13 14h-8v16h-10V17H5z" fill="#fff"/></svg><span class="editar">[Região 1]</span></li>
+            <li><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3l13 14h-8v16h-10V17H5z" fill="#fff"/></svg><span class="editar">[Região 2]</span></li>
+            <li><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3l13 14h-8v16h-10V17H5z" fill="#fff"/></svg><span class="editar">[Região 3]</span></li>
+          </ul>
         </div>
-        <ul class="dests" id="regioes-lista" aria-label="Regiões atendidas">
-          <li><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3l13 14h-8v16h-10V17H5z" fill="#fff"/></svg><span class="editar">[Região 1]</span></li>
-          <li><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3l13 14h-8v16h-10V17H5z" fill="#fff"/></svg><span class="editar">[Região 2]</span></li>
-          <li><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3l13 14h-8v16h-10V17H5z" fill="#fff"/></svg><span class="editar">[Região 3]</span></li>
-        </ul>
+        <figure class="raio">
+          <svg class="radar" id="radar" viewBox="0 0 760 600" role="img" aria-label="Mapa de cobertura da BMG"></svg>
+          <ul class="kmlist" id="kmlist" aria-hidden="true"></ul>
+          <figcaption>Raio ilustrativo · distâncias aproximadas pela estrada</figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -524,7 +554,11 @@ const BMG = {
   email: '',     // ex.: 'contato@dominio.com.br'
   endereco: '',  // ex.: 'Rua Exemplo, 100 - Cidade/UF'
   regioes: [],   // ex.: ['Grande São Paulo', 'Interior de SP']
-  veiculos: ['Truck']  // tipos que a BMG tem hoje, na ordem que aparecem. Prontos para usar: 'VUC', '3/4', 'Toco', 'Truck', 'Bitruck', 'Carreta'
+  veiculos: ['Truck'],  // tipos que a BMG tem hoje, na ordem que aparecem. Prontos para usar: 'VUC', '3/4', 'Toco', 'Truck', 'Bitruck', 'Carreta'
+  // Mapa de cobertura: as linhas saem da base até cada cidade.
+  // Latitude e longitude: no Google Maps, clique com o botão direito na cidade e copie os dois números.
+  base: { cidade: '', lat: null, lon: null },  // ex.: { cidade: 'Cidade', lat: -23.10, lon: -46.90 }
+  destinos: []  // ex.: { cidade: 'Cidade', uf: 'SP', km: 95, lat: -22.90, lon: -47.06 }  (km pela estrada)
 };
 
 (() => {
@@ -544,6 +578,64 @@ const BMG = {
   if (BMG.email) preencher($('#email'), BMG.email);
   if (BMG.endereco) preencher($('#endereco'), BMG.endereco);
   if (BMG.regioes.length) $('#regioes-lista').innerHTML = BMG.regioes.map(r => `<li>${SETA}<span>${esc(r)}</span></li>`).join('');
+
+  // ---------- mapa de cobertura: as linhas saem da base até cada cidade ----------
+  (function cobertura() {
+    const svg = $('#radar'), W = 760, H = 600, cx = 380, cy = 300, R = 240;
+    const num = v => typeof v === 'number' && isFinite(v), rad = g => g * Math.PI / 180;
+    const base = BMG.base || {};
+    const reais = num(base.lat) && num(base.lon) ? (BMG.destinos || []).filter(d => d && d.cidade && num(d.km) && d.km > 0 && num(d.lat) && num(d.lon)) : [];
+    // direção da base até a cidade, em radianos (0 = norte, sentido horário)
+    const rumo = d => { const f1 = rad(base.lat), f2 = rad(d.lat), dl = rad(d.lon - base.lon); return Math.atan2(Math.sin(dl) * Math.cos(f2), Math.cos(f1) * Math.sin(f2) - Math.sin(f1) * Math.cos(f2) * Math.cos(dl)); };
+    // sem os dados da BMG, o mapa mostra linhas de exemplo marcadas entre colchetes, sem cidade nem km
+    const vazio = !reais.length;
+    const pts = vazio
+      ? [[25, 170], [85, 320], [150, 230], [215, 470], [300, 380]].map((p, i) => ({ nome: `[Cidade ${i + 1}]`, km: p[1], a: rad(p[0]) }))
+      : reais.map(d => ({ nome: d.cidade, km: d.km, a: rumo(d) }));
+    const maxKm = Math.max(...pts.map(p => p.km)) * 1.08, raio = km => R * Math.sqrt(km / maxKm);
+
+    let s = '';
+    [25, 50, 100, 200, 300, 500, 800, 1000, 1500, 2000, 3000].filter(k => k < maxKm * .95).slice(-4).forEach(k => {
+      const r = raio(k);
+      s += `<circle class="ring" cx="${cx}" cy="${cy}" r="${r.toFixed(1)}"/><text class="ring-l" x="${cx + 6}" y="${(cy - r - 7).toFixed(1)}">${k} km</text>`;
+    });
+    pts.forEach(p => { const r = raio(p.km); p.x = cx + Math.sin(p.a) * r; p.y = cy - Math.cos(p.a) * r; });
+
+    // cada nome fica à direita ou à esquerda do ponto, sem sair do quadro e sem cobrir ponto, base ou outro nome
+    const hub = base.cidade ? 'BASE ' + base.cidade.toUpperCase() : '[BASE DA BMG]', hw = hub.length * 5.6 + 8;
+    const fixos = [{ x0: cx - 14, x1: cx + 14, y0: cy - 14, y1: cy + 14 }, { x0: cx - hw, x1: cx + hw, y0: cy + 24, y1: cy + 46 }]
+      .concat(pts.map(q => ({ x0: q.x - 6, x1: q.x + 6, y0: q.y - 6, y1: q.y + 6, q })));
+    const bate = (a, b) => a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 && b.y0 < a.y1;
+    const caixa = (p, dir, dy) => { const w = p.nome.length * 9.4, x0 = dir ? p.x + 12 : p.x - 12 - w; return { dir, dy, x0, x1: x0 + w, y0: p.y + dy - 18, y1: p.y + dy + 20 }; };
+    const cabe = c => c.x0 >= 6 && c.x1 <= W - 6 && c.y0 >= 4 && c.y1 <= H - 4;
+    const postos = [];
+    // as cidades mais perto da base ficam onde há menos espaço, então escolhem primeiro
+    pts.slice().sort((a, b) => a.km - b.km).forEach(p => {
+      const pref = Math.sin(p.a) >= -.15;
+      const tent = [[pref, 0], [pref, -24], [pref, 24], [!pref, 0], [!pref, -24], [!pref, 24], [pref, -44], [pref, 44], [!pref, -44], [!pref, 44]].map(([dir, dy]) => caixa(p, dir, dy));
+      p.lb = tent.find(c => cabe(c) && !fixos.some(f => f.q !== p && bate(c, f)) && !postos.some(o => bate(c, o))) || tent.find(cabe) || tent[0];
+      postos.push(p.lb);
+    });
+
+    pts.forEach((p, i) => {
+      const x = p.x.toFixed(1), y = p.y.toFixed(1), tx = (p.x + (p.lb.dir ? 12 : -12)).toFixed(1), ty = p.y + p.lb.dy, an = p.lb.dir ? 'start' : 'end', t = .2 + i * .08;
+      // pathLength="1" só nas linhas reais: é o que faz a linha se desenhar; a de exemplo é tracejada
+      s += `<path ${vazio ? 'class="ln vazio"' : 'class="ln" pathLength="1"'} d="M${cx} ${cy}L${x} ${y}" style="transition-delay:${t.toFixed(2)}s"/>`;
+      s += `<g class="pt${vazio ? ' vazio-t' : ''}" style="transition-delay:${(t + .6).toFixed(2)}s"><circle class="dot" cx="${x}" cy="${y}" r="5.5"/>` +
+        `<text class="city" x="${tx}" y="${(ty - 2).toFixed(1)}" text-anchor="${an}">${esc(p.nome)}</text>` +
+        `<text class="km" x="${tx}" y="${(ty + 15).toFixed(1)}" text-anchor="${an}">${vazio ? '[km]' : p.km + ' km'}</text></g>`;
+    });
+    s += `<circle class="hub" cx="${cx}" cy="${cy}" r="12"/><text class="hub-l${base.cidade ? '' : ' vazio-t'}" x="${cx}" y="${cy + 40}" text-anchor="middle">${esc(hub)}</text>`;
+    svg.innerHTML = s;
+
+    const ordem = pts.slice().sort((a, b) => a.km - b.km);
+    svg.setAttribute('aria-label', vazio ? 'Mapa de cobertura da BMG, aguardando as cidades atendidas.'
+      : `Mapa de cobertura: linhas saindo de ${base.cidade || 'a base da BMG'} até ${ordem.map(p => `${p.nome} (${p.km} km)`).join(', ')}.`);
+    const lista = $('#kmlist');
+    lista.classList.toggle('vazio', vazio);
+    lista.innerHTML = ordem.map(p => `<li><b>${esc(p.nome)}</b> ${vazio ? '[km]' : p.km + ' km'}</li>`).join('');
+    if (base.cidade) preencher($('#base-nome'), base.cidade);
+  })();
 
   // ---------- veículos: tudo sai de BMG.veiculos ----------
   const VEIC = {
@@ -692,7 +784,7 @@ const BMG = {
 
     // placas que chegam: aparecem como se a estrada trouxesse
     if (!reduce) {
-      const ap = [...document.querySelectorAll('.sign-h:not(#cf-h), .svc, .dests, .exit, .qs')];
+      const ap = [...document.querySelectorAll('.sign-h:not(#cf-h), .svc, .dests, .raio, .exit, .qs')];
       ap.forEach(el => el.classList.add('ap'));
       document.documentElement.classList.add('anim');
       const apIO = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('seen'); apIO.unobserve(e.target); } }), { threshold: .15 });
