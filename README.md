@@ -38,6 +38,8 @@ Enquanto `base` ou `destinos` estiverem vazios, o mapa mostra linhas de exemplo 
 | `bmg-logo.jpg` | Logo da BMG (topo, rodapé e baú do caminhão) |
 | `og-bmg.jpg` | Imagem que aparece quando o link é compartilhado no WhatsApp e nas redes |
 | `apple-touch-icon.png` | Ícone quando o site é salvo na tela do celular |
+| `favicon.svg`, `favicon-192.png` | Ícone da aba do navegador e dos resultados do Google |
+| `robots.txt` | Libera o site para os buscadores (o sitemap entra no dia do domínio) |
 
 Quando o domínio estiver no ar, troque `og-bmg.jpg` no `index.html` pelo endereço completo (`https://.../og-bmg.jpg`), para a imagem aparecer nos compartilhamentos.
 
@@ -51,6 +53,29 @@ Os dois formulários abrem o WhatsApp da BMG com a mensagem pronta. O robô já 
 ## Demonstração
 
 Esta versão é de demonstração e tem `<meta name="robots" content="noindex, nofollow">` no começo do `index.html`, para não aparecer no Google. Quando o site virar o oficial, apague essa linha.
+
+## No dia do domínio (SEO)
+
+O básico de SEO já está no site: título, descrição, um único H1, títulos em ordem, textos alternativos nas imagens, versão para celular, imagem de compartilhamento, ícone em arquivo (`favicon.svg` e `favicon-192.png`), `robots.txt` e dados estruturados da empresa (montados a partir do bloco `BMG`). O que depende do domínio e da cidade da BMG:
+
+1. Apagar a linha `noindex` do `index.html`.
+2. No `<head>`, logo depois da descrição, colocar o endereço oficial:
+   ```html
+   <link rel="canonical" href="https://www.DOMINIO.com.br/">
+   <meta property="og:url" content="https://www.DOMINIO.com.br/">
+   ```
+   e trocar `og-bmg.jpg` por `https://www.DOMINIO.com.br/og-bmg.jpg`.
+3. Criar o `sitemap.xml`:
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+     <url><loc>https://www.DOMINIO.com.br/</loc></url>
+   </urlset>
+   ```
+   e acrescentar `Sitemap: https://www.DOMINIO.com.br/sitemap.xml` no fim do `robots.txt`.
+4. Pôr a cidade da base no título e na descrição, que é o que mais pesa na busca local. Ex.: `BMG Transporte · Transportadora em [cidade]`.
+5. Cadastrar o site no Google Search Console (verificação por registro TXT no Registro.br) e enviar o `sitemap.xml`.
+6. Colocar o link do site no Perfil da Empresa no Google, no Instagram, no LinkedIn e no WhatsApp Business.
 
 ## Publicar no GitHub Pages (grátis)
 
