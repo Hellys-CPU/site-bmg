@@ -941,7 +941,7 @@ const BMG = {
       cena.add(new T.HemisphereLight(L(0xeef4ff), L(0x4d5640), .35));
       const sol = new T.DirectionalLight(L(0xfff0d8), 1.6); sol.position.set(14, 22, 12);
       sol.castShadow = true; sol.shadow.mapSize.set(1024, 1024);
-      Object.assign(sol.shadow.camera, { left: -9, right: 9, top: 7, bottom: -7, near: 2, far: 70 }); sol.shadow.bias = -.0004; sol.shadow.radius = 4;
+      Object.assign(sol.shadow.camera, { left: -9, right: 9, top: 7, bottom: -7, near: 2, far: 70 }); sol.shadow.bias = -.0004; sol.shadow.normalBias = .02; sol.shadow.radius = 4;
       cena.add(sol); cena.add(sol.target);
 
       const M = (c, o) => { o = Object.assign({ roughness: .7, metalness: 0 }, o || {}); if (o.emissive !== undefined) o.emissive = L(o.emissive); return new T.MeshStandardMaterial(Object.assign(o, { color: L(c) })); };
@@ -980,7 +980,7 @@ const BMG = {
       const laranja = M(0xea7a2c, { roughness: .4 });
       const plastico = M(0x22262a, { roughness: .6 });
       const borracha = M(0x161819, { roughness: .92 });
-      const vidro = M(0x0f1a24, { roughness: .04, metalness: .9, envMapIntensity: 1.4 });
+      const vidro = M(0x6f8597, { roughness: .06, metalness: .92, envMapIntensity: 1.25 });
       const cromo = M(0xc9d0d6, { roughness: .18, metalness: 1 });
       const aluminio = M(0xb4bcc3, { roughness: .35, metalness: .85 });
       const farol = M(0xfff7e0, { emissive: 0xfff0c0, emissiveIntensity: 1.3, roughness: .1 });
@@ -1033,21 +1033,29 @@ const BMG = {
       caixa(.18, .16, 2.3, plastico, -4.7, .62, 0, corpo); // para-choque traseiro (antiencaixe)
       [-.9, .9].forEach(z => caixa(.12, .5, .12, plastico, -4.64, .85, z, corpo));
 
-      // cabine avançada: perfil com para-brisa quase reto e cantos arredondados
-      const cab = [[2.42, .98], [4.62, .98], [4.66, 2.0], [4.6, 3.06], [4.42, 3.3], [2.42, 3.3]];
-      solido(perfil(cab, [.04, .1, .12, .12, .16, .04]), 2.44, .08, pintura);
+      // cabine avançada: perfil com para-brisa quase reto, cantos arredondados e caixa de roda sobre a roda dianteira
+      const RX = 3.55, RY = .55, RA = .78, BASE = .7;   // centro da roda dianteira, raio da caixa de roda e borda de baixo da cabine
+      const ab = Math.asin((BASE - RY) / RA), arco = [];
+      for (let i = 0; i <= 24; i++) { const a = Math.PI - ab - (Math.PI - 2 * ab) * i / 24; arco.push([RX + Math.cos(a) * RA, RY + Math.sin(a) * RA]); }
+      const cab = [[2.42, BASE]].concat(arco, [[4.62, BASE], [4.66, 2.0], [4.6, 3.06], [4.42, 3.3], [2.42, 3.3]]);
+      solido(perfil(cab, [.04].concat(arco.map(() => 0), [.1, .12, .12, .16, .04])), 2.44, .08, pintura);
+      // forro preto da caixa de roda e o bloco do motor embaixo da cabine (não deixa ver através da caixa de roda)
+      [1, -1].forEach(sz => { const f = new T.Mesh(new T.CylinderGeometry(RA - .13, RA - .13, .44, 32, 1, true, Math.PI / 2 + ab, Math.PI - 2 * ab), M(0x1b1e21, { roughness: .8, side: T.DoubleSide })); f.rotation.x = Math.PI / 2; f.position.set(RX, RY, sz * .95); corpo.add(f); });
+      caixa(1.5, .5, 1.3, plastico, RX, 1.05, 0, corpo);
       solido(perfil([[2.44, 3.3], [4.1, 3.3], [3.05, 3.84], [2.44, 3.84]], [.02, .3, .22, .04]), 2.34, .06, pintura); // defletor
       caixa(2.28, .16, 2.47, laranja, 3.5, 1.62, 0, corpo); // faixa laranja na cabine
       // para-brisa e quebra-sol
       const pb = solido(perfil([[0, 0], [1.0, 0], [1.0, .06], [0, .06]], .02), 2.12, 0, vidro); pb.rotation.z = Math.PI / 2 + .06; pb.position.set(4.77, 2.06, 0);
       caixa(.16, .06, 2.24, plastico, 4.74, 3.14, 0, corpo);
-      // janelas laterais, maçaneta, emenda da porta e degrau
+      // janelas laterais, maçaneta, emenda da porta e degraus (atrás da roda dianteira)
       [1, -1].forEach(sz => {
-        const jan = solido(perfil([[3.32, 2.08], [4.46, 2.08], [4.42, 2.98], [3.32, 2.98]], .08), .02, 0, vidro, 0); jan.position.z = sz * 1.235;
-        caixa(.9, .02, .02, plastico, 3.9, 2.0, sz * 1.24, corpo);
-        caixa(.02, 2.15, .02, plastico, 3.2, 2.12, sz * 1.24, corpo);
-        caixa(.16, .05, .04, cromo, 3.35, 1.9, sz * 1.25, corpo);
-        caixa(.7, .07, .32, aluminio, 4.0, .72, sz * 1.08, corpo);
+        const jan = solido(perfil([[2.95, 2.06], [4.46, 2.06], [4.42, 2.98], [2.95, 2.98]], .08), .02, 0, vidro, 0); jan.position.z = sz * 1.235;
+        caixa(1.5, .02, .02, plastico, 3.7, 1.98, sz * 1.24, corpo);
+        caixa(.02, 2.45, .02, plastico, 2.64, 1.97, sz * 1.24, corpo);
+        caixa(.16, .05, .04, cromo, 2.84, 1.86, sz * 1.25, corpo);
+        caixa(.3, .05, .3, aluminio, 2.6, .4, sz * 1.08, corpo);
+        caixa(.04, .3, .04, plastico, 2.47, .55, sz * 1.2, corpo);
+        caixa(.3, .04, .08, aluminio, 2.6, .94, sz * 1.25, corpo);
         // espelhos retrovisores em braço
         tubo(.025, .42, cromo, 4.56, 2.85, sz * 1.42, 'z');
         const esp = solido(perfil([[0, 0], [.12, 0], [.12, .6], [0, .6]], .04), .26, .02, plastico); esp.position.set(4.5, 2.5, sz * 1.66);
@@ -1056,9 +1064,10 @@ const BMG = {
       // frente: grade, faróis, setas, para-choque com faróis de neblina
       solido(perfil([[0, 0], [.06, 0], [.06, .62], [0, .62]], .02), 1.7, .02, plastico).position.set(4.66, 1.2, 0);
       [1.34, 1.5, 1.66].forEach(y => caixa(.03, .04, 1.6, cromo, 4.73, y, 0, corpo));
-      [.94, -.94].forEach(z => {
-        solido(perfil([[0, 0], [.05, 0], [.05, .26], [0, .26]], .03), .44, .02, farol).position.set(4.68, 1.0, z);
-        caixa(.04, .1, .16, seta, 4.7, 1.32, z * 1.04, corpo);
+      [.9, -.9].forEach(z => {
+        caixa(.05, .3, .52, plastico, 4.69, 1.12, z, corpo);   // carcaça do farol, rente à cabine
+        caixa(.03, .2, .42, farol, 4.71, 1.12, z, corpo);
+        caixa(.04, .1, .16, seta, 4.7, 1.36, z * 1.04, corpo);
       });
       solido(perfil([[4.5, .5], [4.86, .5], [4.86, .92], [4.5, .92]], [.04, .1, .1, .04]), 2.46, .05, plastico);
       [.82, -.82].forEach(z => tubo(.09, .05, farol, 4.88, .7, z, 'x'));
@@ -1087,8 +1096,6 @@ const BMG = {
       };
       [-3.45, -2.2].forEach(x => { roda(x, 1.0, true); roda(x, -1.0, true); });
       roda(3.55, 1.05); roda(3.55, -1.05);
-      // para-lama da roda dianteira (meia casca)
-      [1.05, -1.05].forEach(z => { const pl = new T.Mesh(new T.CylinderGeometry(.66, .66, .46, 24, 1, true, Math.PI / 2, Math.PI), M(0x22262a, { roughness: .6, side: T.DoubleSide })); pl.rotation.x = Math.PI / 2; pl.position.set(3.55, .58, z); corpo.add(pl); });
       // para-lama traseiro sobre o rodado duplo
       [1.0, -1.0].forEach(z => caixa(2.5, .05, .7, plastico, -2.83, 1.17, z, corpo));
 
