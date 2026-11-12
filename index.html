@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>BMG Transporte · Transportadora rodoviária de cargas</title>
-<meta name="description" content="Transportadora rodoviária de cargas, de rota fixa a carga avulsa, com Fiorino e truck. Frota própria e agregados. Cotação pelo WhatsApp, a qualquer hora.">
+<title>BMG Transporte · Transportadora em São Paulo</title>
+<meta name="description" content="Transportadora em Pirituba, São Paulo, com Fiorino e truck. Fretes para Jundiaí, Campinas, Santos, São José dos Campos, Jaú e outros destinos sob acordo.">
 <meta name="theme-color" content="#145ea6">
 <!-- Versão de demonstração: não aparece no Google. Apague a linha abaixo quando o site for o oficial. -->
 <meta name="robots" content="noindex, nofollow">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="BMG Transporte">
-<meta property="og:title" content="BMG Transporte · Transportadora de cargas">
+<meta property="og:title" content="BMG Transporte · Transportadora em São Paulo">
 <!-- Quando o domínio estiver no ar, troque og-bmg.jpg pelo endereço completo (https://.../og-bmg.jpg). -->
 <meta property="og:image" content="og-bmg.jpg">
 <meta property="og:image:width" content="1200">
@@ -19,7 +19,7 @@
 <meta property="og:image:alt" content="Site da BMG Transporte: placa azul com o título e o caminhão da BMG na estrada">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<meta property="og:description" content="Transportadora rodoviária de cargas, de rota fixa a carga avulsa. Peça a cotação pelo WhatsApp.">
+<meta property="og:description" content="Transportadora em São Paulo, de rota fixa a carga avulsa. Fretes para Jundiaí, Campinas, Santos, São José dos Campos, Jaú e outros destinos. Cotação pelo WhatsApp.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-192.png" type="image/png" sizes="192x192">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -209,9 +209,16 @@ svg{display:block}
 .regions h3{font:900 clamp(1.6rem,3vw,2.2rem)/1.05 var(--sign)}
 .regions p{margin-top:10px;color:var(--ink-2)}
 .dests{list-style:none;margin:22px 0 0;padding:clamp(16px,2.4vw,24px) clamp(18px,2.6vw,28px);background:var(--green);color:#fff;border-radius:18px;box-shadow:inset 0 0 0 4px #fff,0 24px 40px -30px rgba(0,0,0,.45);display:grid}
-.dests li{display:grid;grid-template-columns:40px minmax(0,1fr);gap:16px;align-items:center;padding:12px 0;font:800 clamp(20px,2.2vw,26px)/1.15 var(--sign)}
+.dests li{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:16px;align-items:center;padding:12px 0;font:800 clamp(20px,2.2vw,26px)/1.15 var(--sign)}
 .dests li + li{box-shadow:inset 0 2px 0 rgba(255,255,255,.55)}
 .dests svg{width:36px;height:36px}
+/* a seta de cada cidade aponta para onde ela fica, saindo da base (norte para cima) */
+.dests .d-km{font:700 .62em/1 var(--mono);letter-spacing:.02em;color:var(--green-dim);white-space:nowrap}
+.dests li.outros{box-shadow:none;border-top:2px dashed rgba(255,255,255,.75);margin-top:6px;padding-top:16px;font-size:clamp(17px,1.8vw,21px)}
+.dests li.outros a{color:#fff;text-decoration:none}
+.dests li.outros a:hover{text-decoration:underline}
+.dests li.outros small{display:block;font:600 .8em/1.35 var(--sign);color:var(--green-dim);margin-top:3px}
+.regions .aberto{margin-top:12px;color:var(--ink);padding:12px 14px;border-radius:10px;background:var(--white);box-shadow:inset 3px 0 0 var(--yellow)}
 @media (max-width:760px){.regions{grid-template-columns:minmax(0,1fr)}}
 
 /* ---------- Mapa de cobertura: asfalto, faixas pintadas e as linhas saindo da base ---------- */
@@ -228,12 +235,17 @@ svg{display:block}
 .radar .hub{fill:var(--orange);stroke:#fff;stroke-width:3}
 .radar .hub-l{font:900 16px var(--sign);fill:#fff;letter-spacing:.06em}
 .radar .vazio-t text,.radar text.vazio-t{fill:var(--yellow)}
+/* a rota em aberto: outros destinos, sob acordo */
+.radar .ln.livre{stroke:#fff;stroke-opacity:.8;stroke-width:2;stroke-dasharray:2 7}
+.radar .livre-dot{fill:var(--asphalt);stroke:var(--yellow);stroke-width:2.4;stroke-dasharray:4 3}
+.radar .livre-plus{stroke:var(--yellow);stroke-width:2.6;stroke-linecap:round}
+.radar .livre .city,.radar .livre .km{fill:var(--yellow)}
 .raio figcaption{margin-top:10px;font:700 12.5px/1.4 var(--mono);letter-spacing:.04em;color:var(--asph-dim)}
 .kmlist{display:none;list-style:none;margin:14px 0 0;padding:0;columns:2;column-gap:16px;font:700 14px/1.9 var(--mono);color:var(--asph-dim)}
 .kmlist li{break-inside:avoid}
 .kmlist b{font:800 15px var(--sign);color:#fff}
 .kmlist.vazio b{color:var(--yellow)}
-html.anim .radar .ln:not(.vazio){stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.1s var(--ease)}
+html.anim .radar .ln:not(.vazio):not(.livre){stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.1s var(--ease)}
 html.anim .radar .pt{opacity:0;transition:opacity .45s}
 html.anim .raio.seen .ln{stroke-dashoffset:0}
 html.anim .raio.seen .pt{opacity:1}
@@ -290,6 +302,8 @@ footer{background:var(--asphalt-2);color:var(--asph-dim);padding:0 0 calc(40px +
 .foot b{display:block;color:#fff;font:800 17px/1.2 var(--sign);margin-bottom:8px}
 .foot p{margin-top:12px}
 .foot .editar{color:#fff}
+.foot a{color:#fff}
+.foot #mapa{display:inline-block;margin-top:8px;font-weight:700}
 .copy{grid-column:1/-1;border-top:1px solid #34383c;padding-top:18px;font-size:14px;color:#8f969c}
 @media (max-width:760px){.foot{grid-template-columns:minmax(0,1fr)}}
 
@@ -383,8 +397,8 @@ html.anim .ap.seen{opacity:1;transform:none}
           <div class="go">
             <svg viewBox="0 0 80 110" aria-hidden="true"><path d="M40 4L74 44H52v62H28V44H6z" fill="#fff"/></svg>
             <div>
-              <h1 id="h1">Transporte rodoviário de cargas, de rota fixa a carga avulsa</h1>
-              <p class="lead">Frota própria e rede de motoristas agregados para levar a sua carga. Peça a cotação aqui ou chame no WhatsApp: a gente responde a qualquer hora.</p>
+              <h1 id="h1">Transportadora em São Paulo, de rota fixa a carga avulsa</h1>
+              <p class="lead"><span data-veic="Lista">Fiorino e truck</span> saindo de Pirituba para <span data-destinos="mais">Jundiaí, Campinas, Santos, São José dos Campos, Jaú</span> e outros destinos sob acordo. Peça a cotação aqui ou chame no WhatsApp: a gente responde a qualquer hora.</p>
               <div class="acts">
                 <a class="btn orange" href="#cotacao">Pedir cotação <svg viewBox="0 0 24 24" class="pg" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
                 <a class="btn line" data-whatsapp href="#cotacao"><svg viewBox="0 0 24 24" class="pg" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-11.9 7L4 20l1.3-4.3A8 8 0 1 1 20 11.5z"/></svg>Falar no WhatsApp</a>
@@ -399,7 +413,7 @@ html.anim .ap.seen{opacity:1;transform:none}
               <dt>Operação</dt><dd>Rotas fixas e cargas avulsas</dd>
               <dt>Motoristas</dt><dd>Frota própria e agregados</dd>
               <dt>Atendimento</dt><dd>WhatsApp, a qualquer hora</dd>
-              <dt>Regiões</dt><dd id="info-reg"><a href="#regioes">ver regiões atendidas</a></dd>
+              <dt>Rotas</dt><dd id="info-reg"><a href="#regioes">Jundiaí, Campinas, Santos e mais</a></dd>
             </dl>
           </aside>
         </div>
@@ -446,18 +460,22 @@ html.anim .ap.seen{opacity:1;transform:none}
       </div>
       <div class="regions" id="regioes">
         <div>
-          <h3>Regiões atendidas</h3>
-          <p>Cada linha do mapa sai da base da BMG, em <span class="editar" id="base-nome">[cidade da base]</span>, até uma cidade atendida, com a distância aproximada pela estrada. Se a sua rota passa por aqui, chame no WhatsApp ou peça a cotação.</p>
-          <ul class="dests" id="regioes-lista" aria-label="Regiões atendidas">
-            <li><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3l13 14h-8v16h-10V17H5z" fill="#fff"/></svg><span class="editar">[Região 1]</span></li>
-            <li><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3l13 14h-8v16h-10V17H5z" fill="#fff"/></svg><span class="editar">[Região 2]</span></li>
-            <li><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3l13 14h-8v16h-10V17H5z" fill="#fff"/></svg><span class="editar">[Região 3]</span></li>
+          <h3>Rotas a partir de São Paulo</h3>
+          <p>Saímos de Pirituba, em <span class="editar" id="base-nome">[cidade da base]</span>, para <span data-destinos="e">Jundiaí, Campinas, Santos, São José dos Campos e Jaú</span>. Cada linha do mapa mostra a distância aproximada pela estrada.</p>
+          <p class="aberto"><b>Não são só essas rotas.</b> Outras cidades e outros tipos de local, como porto, centro de distribuição, indústria ou comércio, entram sob acordo. Mande a origem e o destino que a gente combina com você.</p>
+          <ul class="dests" id="regioes-lista" aria-label="Rotas a partir de São Paulo">
+            <li><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3l13 14h-8v16h-10V17H5z" fill="#fff"/></svg><span>Jundiaí</span><span class="d-km">46 km</span></li>
+            <li><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3l13 14h-8v16h-10V17H5z" fill="#fff"/></svg><span>Campinas</span><span class="d-km">83 km</span></li>
+            <li><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3l13 14h-8v16h-10V17H5z" fill="#fff"/></svg><span>Santos</span><span class="d-km">93 km</span></li>
+            <li><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3l13 14h-8v16h-10V17H5z" fill="#fff"/></svg><span>São José dos Campos</span><span class="d-km">126 km</span></li>
+            <li><svg viewBox="0 0 36 36" aria-hidden="true"><path d="M18 3l13 14h-8v16h-10V17H5z" fill="#fff"/></svg><span>Jaú</span><span class="d-km">286 km</span></li>
+            <li class="outros"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="14" fill="none" stroke="#fff" stroke-width="2.6" stroke-dasharray="5 4"/><path d="M18 11v14M11 18h14" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg><a href="#cotacao">Outros destinos<small>Outras cidades e tipos de local, sob acordo. Peça a cotação.</small></a></li>
           </ul>
         </div>
         <figure class="raio">
           <svg class="radar" id="radar" viewBox="0 0 760 600" role="img" aria-label="Mapa de cobertura da BMG"></svg>
           <ul class="kmlist" id="kmlist" aria-hidden="true"></ul>
-          <figcaption>Raio ilustrativo · distâncias aproximadas pela estrada</figcaption>
+          <figcaption>Distâncias aproximadas pela estrada, saindo de Pirituba · outros destinos sob acordo</figcaption>
         </figure>
       </div>
     </div>
@@ -473,7 +491,8 @@ html.anim .ap.seen{opacity:1;transform:none}
         <details class="q" open><summary>Vocês fazem rota fixa e carga avulsa?<svg viewBox="0 0 24 24" class="pg" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Sim. Atendemos contratos com rotas combinadas e também cargas fora da rotina.</p></details>
         <details class="q"><summary>Com que veículos vocês rodam?<svg viewBox="0 0 24 24" class="pg" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Hoje rodamos com <span data-veic="lista">Fiorino e truck</span>, da frota própria e de motoristas agregados.</p></details>
         <details class="q"><summary>Como peço uma cotação?<svg viewBox="0 0 24 24" class="pg" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Pelo formulário "Pedir cotação", aqui embaixo, ou direto no WhatsApp. Conte origem, destino, data e o que vai transportar.</p></details>
-        <details class="q"><summary>Quais regiões vocês atendem?<svg viewBox="0 0 24 24" class="pg" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Veja as regiões na placa verde, mais acima. Se a sua rota não estiver lá, chame no WhatsApp que a gente avalia.</p></details>
+        <details class="q"><summary>Para quais cidades vocês fazem frete?<svg viewBox="0 0 24 24" class="pg" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Saímos de Pirituba, em São Paulo, para <span data-destinos="e">Jundiaí, Campinas, Santos, São José dos Campos e Jaú</span>. Outras cidades e outros tipos de local entram sob acordo: chame no WhatsApp com a origem e o destino.</p></details>
+        <details class="q"><summary>Onde fica a BMG?<svg viewBox="0 0 24 24" class="pg" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Na <span id="faq-end">Rua Romão Martins, 174, Jardim Santo Elias, Pirituba, São Paulo/SP, CEP 05135-340</span>. <a href="#" id="faq-mapa" target="_blank" rel="noopener">Ver no mapa</a>.</p></details>
         <details class="q"><summary>Quais dados do motorista eu recebo?<svg viewBox="0 0 24 24" class="pg" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Nome completo, CPF e placa do veículo, com o horário de coleta combinado.</p></details>
         <details class="q"><summary>O atendimento funciona fora do horário comercial?<svg viewBox="0 0 24 24" class="pg" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Sim. O WhatsApp da BMG responde a qualquer hora.</p></details>
         <details class="q"><summary>Como faço para ser agregado?<svg viewBox="0 0 24 24" class="pg" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></summary><p>Mande seus dados no formulário "Seja nosso agregado", aqui embaixo. A nossa equipe fala com você pelo WhatsApp.</p></details>
@@ -535,7 +554,7 @@ html.anim .ap.seen{opacity:1;transform:none}
   <div class="wrap foot">
     <div>
       <span class="brand"><img src="bmg-logo.jpg" alt="BMG transporte" width="450" height="228" loading="lazy"></span>
-      <p>Transporte rodoviário de cargas.</p>
+      <p>Transportadora rodoviária de cargas em São Paulo.</p>
     </div>
     <div>
       <b>Contato</b>
@@ -545,6 +564,7 @@ html.anim .ap.seen{opacity:1;transform:none}
     <div>
       <b>Endereço</b>
       <span id="endereco" class="editar">[endereço da BMG]</span>
+      <a id="mapa" href="#" target="_blank" rel="noopener" hidden>Ver no mapa</a>
     </div>
     <div class="copy">© <span id="ano">2026</span> BMG. Todos os direitos reservados.</div>
   </div>
@@ -562,7 +582,14 @@ const BMG = {
   // Mapa de cobertura: as linhas saem da base até cada cidade.
   // Latitude e longitude: no Google Maps, clique com o botão direito na cidade e copie os dois números.
   base: { cidade: 'São Paulo', lat: -23.496, lon: -46.748 },  // o endereço da BMG, em Pirituba
-  destinos: []  // ex.: { cidade: 'Cidade', uf: 'SP', km: 95, lat: -22.90, lon: -47.06 }  (km pela estrada)
+  // km pela estrada saindo de Pirituba (OpenStreetMap, 12/11/2026). Outros destinos sob acordo aparecem sozinhos no mapa e na placa.
+  destinos: [
+    { cidade: 'Jundiaí', uf: 'SP', km: 46, lat: -23.1888, lon: -46.8845 },
+    { cidade: 'Campinas', uf: 'SP', km: 83, lat: -22.9056, lon: -47.0596 },
+    { cidade: 'Santos', uf: 'SP', km: 93, lat: -23.9609, lon: -46.3166 },
+    { cidade: 'São José dos Campos', uf: 'SP', km: 126, lat: -23.0555, lon: -45.9583 },
+    { cidade: 'Jaú', uf: 'SP', km: 286, lat: -22.2933, lon: -48.5593 }
+  ]
 };
 
 (() => {
@@ -579,14 +606,20 @@ const BMG = {
     document.querySelectorAll('[data-whatsapp]').forEach(a => { a.href = link('Olá! Vim pelo site da BMG.'); a.target = '_blank'; a.rel = 'noopener'; });
     preencher($('#fone-rodape'), WHATSAPP.length >= 12 ? `(${WHATSAPP.slice(2, 4)}) ${WHATSAPP.slice(4, -4)}-${WHATSAPP.slice(-4)}` : WHATSAPP);
   }
-  if (BMG.email) preencher($('#email'), BMG.email);
+  if (BMG.email) { $('#email').innerHTML = `<a href="mailto:${esc(BMG.email)}">${esc(BMG.email)}</a>`; $('#email').classList.remove('editar'); }
   const END = BMG.endereco || {};
+  const MAPA = END.rua ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent([END.rua, END.bairro, `${END.cidade} - ${END.uf}`, END.cep].filter(Boolean).join(', ')) : '';
   if (END.rua) {
     const cidade = [END.cidade && END.uf ? `${END.cidade}/${END.uf}` : END.cidade, END.cep && `CEP ${END.cep}`].filter(Boolean).join(', ');
     $('#endereco').innerHTML = [END.rua, END.bairro, cidade].filter(Boolean).map(esc).join('<br>');
     $('#endereco').classList.remove('editar');
-  }
-  if (BMG.regioes.length) $('#regioes-lista').innerHTML = BMG.regioes.map(r => `<li>${SETA}<span>${esc(r)}</span></li>`).join('');
+    $('#faq-end').textContent = [END.rua, END.bairro, cidade].filter(Boolean).join(', ');
+    $('#mapa').href = $('#faq-mapa').href = MAPA; $('#mapa').hidden = false;
+  } else $('#faq-end').closest('details').hidden = true;
+  // a última linha da placa: rotas fora da lista entram sob acordo
+  const OUTROS = '<li class="outros"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="14" fill="none" stroke="#fff" stroke-width="2.6" stroke-dasharray="5 4"/><path d="M18 11v14M11 18h14" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>' +
+    '<a href="#cotacao">Outros destinos<small>Outras cidades e tipos de local, sob acordo. Peça a cotação.</small></a></li>';
+  if (BMG.regioes.length) $('#regioes-lista').innerHTML = BMG.regioes.map(r => `<li>${SETA}<span>${esc(r)}</span></li>`).join('') + OUTROS;
 
   // ---------- mapa de cobertura: as linhas saem da base até cada cidade ----------
   (function cobertura() {
@@ -609,13 +642,22 @@ const BMG = {
       s += `<circle class="ring" cx="${cx}" cy="${cy}" r="${r.toFixed(1)}"/><text class="ring-l" x="${cx + 6}" y="${(cy - r - 7).toFixed(1)}">${k} km</text>`;
     });
     pts.forEach(p => { const r = raio(p.km); p.x = cx + Math.sin(p.a) * r; p.y = cy - Math.cos(p.a) * r; });
+    // a rota em aberto: uma linha tracejada no maior vão entre as cidades, para os destinos sob acordo
+    if (!vazio) {
+      const as = pts.map(p => (p.a + 2 * Math.PI) % (2 * Math.PI)).sort((a, b) => a - b);
+      let vao = 0, meio = 0;
+      as.forEach((a, i) => { const g = (i < as.length - 1 ? as[i + 1] : as[0] + 2 * Math.PI) - a; if (g > vao) { vao = g; meio = a + g / 2; } });
+      const r = R * .62;
+      pts.push({ nome: 'Outros destinos', km: Infinity, livre: true, a: meio, x: cx + Math.sin(meio) * r, y: cy - Math.cos(meio) * r });
+    }
+    const folga = p => p.livre ? 18 : 12;
 
     // cada nome fica à direita ou à esquerda do ponto, sem sair do quadro e sem cobrir ponto, base ou outro nome
     const hub = base.cidade ? 'BASE ' + base.cidade.toUpperCase() : '[BASE DA BMG]', hw = hub.length * 5.6 + 8;
     const fixos = [{ x0: cx - 14, x1: cx + 14, y0: cy - 14, y1: cy + 14 }, { x0: cx - hw, x1: cx + hw, y0: cy + 24, y1: cy + 46 }]
-      .concat(pts.map(q => ({ x0: q.x - 6, x1: q.x + 6, y0: q.y - 6, y1: q.y + 6, q })));
+      .concat(pts.map(q => { const m = q.livre ? 13 : 6; return { x0: q.x - m, x1: q.x + m, y0: q.y - m, y1: q.y + m, q }; }));
     const bate = (a, b) => a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 && b.y0 < a.y1;
-    const caixa = (p, dir, dy) => { const w = p.nome.length * 9.4, x0 = dir ? p.x + 12 : p.x - 12 - w; return { dir, dy, x0, x1: x0 + w, y0: p.y + dy - 18, y1: p.y + dy + 20 }; };
+    const caixa = (p, dir, dy) => { const w = p.nome.length * 9.4, x0 = dir ? p.x + folga(p) : p.x - folga(p) - w; return { dir, dy, x0, x1: x0 + w, y0: p.y + dy - 18, y1: p.y + dy + 20 }; };
     const cabe = c => c.x0 >= 6 && c.x1 <= W - 6 && c.y0 >= 4 && c.y1 <= H - 4;
     const postos = [];
     // as cidades mais perto da base ficam onde há menos espaço, então escolhem primeiro
@@ -627,7 +669,15 @@ const BMG = {
     });
 
     pts.forEach((p, i) => {
-      const x = p.x.toFixed(1), y = p.y.toFixed(1), tx = (p.x + (p.lb.dir ? 12 : -12)).toFixed(1), ty = p.y + p.lb.dy, an = p.lb.dir ? 'start' : 'end', t = .2 + i * .08;
+      const x = p.x.toFixed(1), y = p.y.toFixed(1), tx = (p.x + (p.lb.dir ? folga(p) : -folga(p))).toFixed(1), ty = p.y + p.lb.dy, an = p.lb.dir ? 'start' : 'end', t = .2 + i * .08;
+      if (p.livre) {
+        // chega por último, depois que as rotas se desenham
+        s += `<g class="pt livre" style="transition-delay:${(t + .9).toFixed(2)}s"><path class="ln livre" d="M${cx} ${cy}L${x} ${y}"/>` +
+          `<circle class="livre-dot" cx="${x}" cy="${y}" r="11"/><path class="livre-plus" d="M${(p.x - 5).toFixed(1)} ${y}h10M${x} ${(p.y - 5).toFixed(1)}v10"/>` +
+          `<text class="city" x="${tx}" y="${(ty - 2).toFixed(1)}" text-anchor="${an}">${esc(p.nome)}</text>` +
+          `<text class="km" x="${tx}" y="${(ty + 15).toFixed(1)}" text-anchor="${an}">sob acordo</text></g>`;
+        return;
+      }
       // pathLength="1" só nas linhas reais: é o que faz a linha se desenhar; a de exemplo é tracejada
       s += `<path ${vazio ? 'class="ln vazio"' : 'class="ln" pathLength="1"'} d="M${cx} ${cy}L${x} ${y}" style="transition-delay:${t.toFixed(2)}s"/>`;
       s += `<g class="pt${vazio ? ' vazio-t' : ''}" style="transition-delay:${(t + .6).toFixed(2)}s"><circle class="dot" cx="${x}" cy="${y}" r="5.5"/>` +
@@ -637,13 +687,21 @@ const BMG = {
     s += `<circle class="hub" cx="${cx}" cy="${cy}" r="12"/><text class="hub-l${base.cidade ? '' : ' vazio-t'}" x="${cx}" y="${cy + 40}" text-anchor="middle">${esc(hub)}</text>`;
     svg.innerHTML = s;
 
-    const ordem = vazio ? pts : pts.slice().sort((a, b) => a.km - b.km);
+    const ordem = vazio ? pts : pts.slice().sort((a, b) => a.km - b.km), cidades = ordem.filter(p => !p.livre);
     svg.setAttribute('aria-label', vazio ? 'Mapa de cobertura da BMG, aguardando as cidades atendidas.'
-      : `Mapa de cobertura: linhas saindo de ${base.cidade || 'a base da BMG'} até ${ordem.map(p => `${p.nome} (${p.km} km)`).join(', ')}.`);
+      : `Mapa de cobertura: linhas saindo de ${base.cidade || 'a base da BMG'} até ${cidades.map(p => `${p.nome} (${p.km} km)`).join(', ')}, e outros destinos sob acordo.`);
     const lista = $('#kmlist');
     lista.classList.toggle('vazio', vazio);
-    lista.innerHTML = ordem.map(p => `<li><b>${esc(p.nome)}</b> ${vazio ? '[km]' : p.km + ' km'}</li>`).join('');
+    lista.innerHTML = ordem.map(p => `<li><b>${esc(p.nome)}</b> ${vazio ? '[km]' : p.livre ? 'sob acordo' : p.km + ' km'}</li>`).join('');
     if (base.cidade) preencher($('#base-nome'), base.cidade);
+    if (vazio) return;
+
+    // a placa verde: uma linha por cidade, com a seta apontando para onde ela fica, e a linha dos destinos sob acordo
+    $('#regioes-lista').innerHTML = cidades.map(p => `<li><svg viewBox="0 0 36 36" aria-hidden="true" style="transform:rotate(${Math.round(p.a * 180 / Math.PI)}deg)"><path d="M18 3l13 14h-8v16h-10V17H5z" fill="#fff"/></svg><span>${esc(p.nome)}</span><span class="d-km">${p.km} km</span></li>`).join('') + OUTROS;
+    // os nomes das cidades nos textos (abertura, mapa e perguntas)
+    const nomes = cidades.map(p => p.nome), FMT = { mais: nomes.join(', '), e: nomes.length > 1 ? nomes.slice(0, -1).join(', ') + ' e ' + nomes[nomes.length - 1] : nomes[0] };
+    document.querySelectorAll('[data-destinos]').forEach(el => { el.textContent = FMT[el.dataset.destinos] || FMT.e; });
+    if (!BMG.regioes.length) $('#info-reg a').textContent = nomes.slice(0, 3).join(', ') + (nomes.length > 3 ? ' e mais' : '');
   })();
 
   // ---------- veículos: tudo sai de BMG.veiculos ----------
@@ -823,8 +881,16 @@ const BMG = {
     empresa.contactPoint = { '@type': 'ContactPoint', telephone: '+' + WHATSAPP, contactType: 'customer service', availableLanguage: 'Portuguese', areaServed: 'BR' };
   }
   if (BMG.email) empresa.email = BMG.email;
-  if (END.rua) empresa.address = { '@type': 'PostalAddress', streetAddress: END.rua, addressLocality: END.cidade, addressRegion: END.uf, postalCode: END.cep, addressCountry: 'BR' };
-  const areas = BMG.regioes.concat((BMG.destinos || []).filter(d => d && d.cidade).map(d => d.uf ? `${d.cidade}, ${d.uf}` : d.cidade));
+  if (END.rua) {
+    empresa.address = { '@type': 'PostalAddress', streetAddress: END.rua, addressLocality: END.cidade, addressRegion: END.uf, postalCode: END.cep, addressCountry: 'BR' };
+    empresa.hasMap = MAPA;
+    const b = BMG.base || {};
+    if (typeof b.lat === 'number' && typeof b.lon === 'number') empresa.geo = { '@type': 'GeoCoordinates', latitude: b.lat, longitude: b.lon };
+  }
+  // onde a BMG atende: a cidade da base, as regiões e as cidades do mapa
+  const cidade = (nome, uf) => ({ '@type': 'City', name: uf ? `${nome}, ${uf}` : nome });
+  const areas = (BMG.base && BMG.base.cidade ? [cidade(BMG.base.cidade, END.uf)] : [])
+    .concat(BMG.regioes, (BMG.destinos || []).filter(d => d && d.cidade).map(d => cidade(d.cidade, d.uf)));
   if (areas.length) empresa.areaServed = areas;
   if ((BMG.redes || []).length) empresa.sameAs = BMG.redes;
   const perguntas = [...document.querySelectorAll('#perguntas details')].map(q => ({ '@type': 'Question', name: q.querySelector('summary').textContent.trim(), acceptedAnswer: { '@type': 'Answer', text: q.querySelector('p').textContent.trim() } }));
