@@ -8,7 +8,7 @@ No fim do `index.html` tem um bloco só com os dados da BMG. É só preencher:
 
 ```js
 const BMG = {
-  whatsapp: '',  // número do robô, com 55 e DDD. Ex.: '5511999998888'
+  whatsapp: '5511947478815',  // WhatsApp da BMG, com 55 e DDD
   email: 'transportebmg@outlook.com',
   endereco: { rua: 'Rua Romão Martins, 174', bairro: 'Jardim Santo Elias, Pirituba', cidade: 'São Paulo', uf: 'SP', cep: '05135-340' },
   regioes: [],   // ex.: ['Grande São Paulo', 'Interior de SP']
