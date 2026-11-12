@@ -554,14 +554,14 @@ html.anim .ap.seen{opacity:1;transform:none}
 // ===== Dados da BMG: é só preencher aqui =====
 const BMG = {
   whatsapp: '',  // número de WhatsApp da BMG, com 55 e DDD. Ex.: '5511999998888'
-  email: '',     // ex.: 'contato@dominio.com.br'
-  endereco: '',  // ex.: 'Rua Exemplo, 100 - Cidade/UF'
+  email: 'transportebmg@outlook.com',
+  endereco: { rua: 'Rua Romão Martins, 174', bairro: 'Jardim Santo Elias, Pirituba', cidade: 'São Paulo', uf: 'SP', cep: '05135-340' },
   regioes: [],   // ex.: ['Grande São Paulo', 'Interior de SP']
   veiculos: ['Fiorino', 'Truck'],  // tipos que a BMG tem hoje, na ordem que aparecem. Prontos para usar: 'Fiorino', 'VUC', '3/4', 'Toco', 'Truck', 'Bitruck', 'Carreta'
   redes: [],     // endereços dos perfis, para o Google ligar o site a eles. Ex.: ['https://www.instagram.com/...', 'https://www.linkedin.com/company/...']
   // Mapa de cobertura: as linhas saem da base até cada cidade.
   // Latitude e longitude: no Google Maps, clique com o botão direito na cidade e copie os dois números.
-  base: { cidade: '', lat: null, lon: null },  // ex.: { cidade: 'Cidade', lat: -23.10, lon: -46.90 }
+  base: { cidade: 'São Paulo', lat: -23.496, lon: -46.748 },  // o endereço da BMG, em Pirituba
   destinos: []  // ex.: { cidade: 'Cidade', uf: 'SP', km: 95, lat: -22.90, lon: -47.06 }  (km pela estrada)
 };
 
@@ -580,7 +580,12 @@ const BMG = {
     preencher($('#fone-rodape'), WHATSAPP.length >= 12 ? `(${WHATSAPP.slice(2, 4)}) ${WHATSAPP.slice(4, -4)}-${WHATSAPP.slice(-4)}` : WHATSAPP);
   }
   if (BMG.email) preencher($('#email'), BMG.email);
-  if (BMG.endereco) preencher($('#endereco'), BMG.endereco);
+  const END = BMG.endereco || {};
+  if (END.rua) {
+    const cidade = [END.cidade && END.uf ? `${END.cidade}/${END.uf}` : END.cidade, END.cep && `CEP ${END.cep}`].filter(Boolean).join(', ');
+    $('#endereco').innerHTML = [END.rua, END.bairro, cidade].filter(Boolean).map(esc).join('<br>');
+    $('#endereco').classList.remove('editar');
+  }
   if (BMG.regioes.length) $('#regioes-lista').innerHTML = BMG.regioes.map(r => `<li>${SETA}<span>${esc(r)}</span></li>`).join('');
 
   // ---------- mapa de cobertura: as linhas saem da base até cada cidade ----------
@@ -805,7 +810,7 @@ const BMG = {
   const url = location.origin + location.pathname, abs = f => new URL(f, location.href).href;
   const servico = (name, description) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name, description, serviceType: 'Transporte rodoviário de cargas' } });
   const empresa = {
-    '@type': BMG.endereco ? ['Organization', 'LocalBusiness'] : 'Organization', '@id': url + '#empresa',
+    '@type': END.rua ? ['Organization', 'LocalBusiness'] : 'Organization', '@id': url + '#empresa',
     name: 'BMG Transporte', alternateName: 'BMG', url,
     description: document.querySelector('meta[name="description"]').content,
     logo: abs('bmg-logo.jpg'), image: abs('og-bmg.jpg'),
@@ -818,7 +823,7 @@ const BMG = {
     empresa.contactPoint = { '@type': 'ContactPoint', telephone: '+' + WHATSAPP, contactType: 'customer service', availableLanguage: 'Portuguese', areaServed: 'BR' };
   }
   if (BMG.email) empresa.email = BMG.email;
-  if (BMG.endereco) empresa.address = BMG.endereco;
+  if (END.rua) empresa.address = { '@type': 'PostalAddress', streetAddress: END.rua, addressLocality: END.cidade, addressRegion: END.uf, postalCode: END.cep, addressCountry: 'BR' };
   const areas = BMG.regioes.concat((BMG.destinos || []).filter(d => d && d.cidade).map(d => d.uf ? `${d.cidade}, ${d.uf}` : d.cidade));
   if (areas.length) empresa.areaServed = areas;
   if ((BMG.redes || []).length) empresa.sameAs = BMG.redes;

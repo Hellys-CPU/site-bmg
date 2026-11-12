@@ -9,12 +9,12 @@ No fim do `index.html` tem um bloco só com os dados da BMG. É só preencher:
 ```js
 const BMG = {
   whatsapp: '',  // número do robô, com 55 e DDD. Ex.: '5511999998888'
-  email: '',
-  endereco: '',
+  email: 'transportebmg@outlook.com',
+  endereco: { rua: 'Rua Romão Martins, 174', bairro: 'Jardim Santo Elias, Pirituba', cidade: 'São Paulo', uf: 'SP', cep: '05135-340' },
   regioes: [],   // ex.: ['Grande São Paulo', 'Interior de SP']
   veiculos: ['Fiorino', 'Truck'],  // tipos que a BMG tem: 'Fiorino', 'VUC', '3/4', 'Toco', 'Truck', 'Bitruck', 'Carreta'
   redes: [],     // endereços do Instagram, LinkedIn e Perfil no Google
-  base: { cidade: '', lat: null, lon: null },  // de onde os caminhões saem
+  base: { cidade: 'São Paulo', lat: -23.496, lon: -46.748 },  // de onde os caminhões saem
   destinos: []  // ex.: { cidade: 'Cidade', uf: 'SP', km: 95, lat: -22.90, lon: -47.06 }
 };
 ```
