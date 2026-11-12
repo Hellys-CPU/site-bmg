@@ -24,17 +24,32 @@ const BMG = {
 
 Enquanto um dado estiver vazio, o site mostra o espaço marcado entre colchetes. Os veículos aparecem nos serviços, nas perguntas e nos formulários, a partir da lista `veiculos`.
 
-### Mapa de cobertura
+### A viagem (topo do site)
 
-Em "Rotas a partir de São Paulo" tem um mapa com linhas saindo da base até cada cidade, com a distância pela estrada, e a placa verde com as mesmas cidades. Os dois se montam sozinhos a partir de `base` e `destinos`:
+O topo é uma viagem em 3D: o truck da BMG fica na estrada e quatro paradas sobem por cima dele conforme a pessoa rola a página. A rolagem funciona como acelerador.
+
+1. **KM 0 · Pirituba**: a abertura, com o título, a cotação e o WhatsApp.
+2. **KM 1 · Como trabalhamos**: os quatro passos, do pedido à estrada.
+3. **KM 2 · Rotas**: a câmera sobe e a estrada vira um mapa das rotas (veja abaixo).
+4. **KM 3 · Cotação**: o truck encosta no acostamento e o cartão traz a cotação rápida (origem, destino e data).
+
+Serviços, perguntas, formulários completos e rodapé continuam embaixo, como uma página normal.
+
+- O botão redondo no canto pausa o truck. Fora da tela, a animação para sozinha.
+- O 3D (Three.js do cdnjs) só baixa depois que a página carregou. Sem WebGL ou com economia de dados, aparece a estrada desenhada com o caminhão, e o conteúdo é o mesmo.
+- Quem desliga as animações no celular ou no computador vê a estrada parada, e a câmera pula de uma parada para a outra.
+
+### Mapa das rotas
+
+Na parada "Rotas", uma linha amarela sai da base até cada cidade, com uma placa com o nome e o km. No cartão, a placa verde mostra as mesmas cidades, com uma seta apontando para a direção de cada uma e o km num hodômetro. Os dois se montam sozinhos a partir de `base` e `destinos`:
 
 - `lat` e `lon`: no Google Maps, clique com o botão direito na cidade e copie os dois números (o primeiro é a latitude).
 - `km`: a distância pela estrada, da base até a cidade (a rota do Google Maps serve). As de hoje saíram do OpenStreetMap, de Pirituba até o centro de cada cidade.
-- O mapa calcula a direção de cada cidade pela latitude e longitude, desenha os anéis de distância e posiciona os nomes sem cobrir os pontos. Na placa, a seta de cada cidade aponta para a direção dela.
-- Sempre aparece uma rota tracejada "Outros destinos · sob acordo", no maior espaço livre do mapa, e a última linha da placa leva para a cotação: a lista não é tudo o que a BMG faz.
-- Os nomes das cidades também entram sozinhos na abertura, no texto do mapa e na pergunta "Para quais cidades vocês fazem frete?".
+- O mapa calcula a direção de cada cidade pela latitude e longitude e desenha os anéis de 50, 100 e 200 km. As placas se posicionam sozinhas para não cobrir o truck nem umas às outras, em qualquer tamanho de tela.
+- Sempre aparece uma rota tracejada "Outros destinos · sob acordo", no maior espaço livre do mapa. A última linha da placa leva para a cotação, porque a lista não é tudo o que a BMG faz.
+- Os nomes das cidades também entram sozinhos no texto da abertura e na pergunta "Para quais cidades vocês fazem frete?".
 
-Enquanto `base` ou `destinos` estiverem vazios, o mapa mostra linhas de exemplo marcadas entre colchetes, sem nomes de cidade nem distâncias.
+Enquanto `base` ou `destinos` estiverem vazios, a placa fica com a lista escrita no `index.html` e o mapa mostra só "Outros destinos".
 
 ## Arquivos
 
@@ -52,10 +67,10 @@ Quando o domínio estiver no ar, troque `og-bmg.jpg` no `index.html` pelo endere
 
 ## Como os formulários funcionam
 
-Os dois formulários abrem o WhatsApp da BMG com a mensagem pronta. O robô já entende as duas:
+Os formulários abrem o WhatsApp da BMG com a mensagem pronta. O robô já entende as mensagens:
 
 - **Seja nosso agregado**: a mensagem começa com "Quero ser agregado da BMG". O robô responde ao motorista, avisa o gestor e o cadastro aparece no Painel de Rotas.
-- **Pedir cotação**: a mensagem começa com "Pedido de cotação pelo site". O robô passa a conversa para o negociador.
+- **Pedir cotação** (o formulário completo, embaixo) e a **cotação rápida** (na parada "Cotação", só com origem, destino e data): a mensagem começa com "Pedido de cotação pelo site". O robô passa a conversa para o negociador, que pergunta o resto na conversa.
 
 ## Demonstração
 
