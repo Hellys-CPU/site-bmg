@@ -247,7 +247,7 @@ svg{display:block}
 .kmlist.vazio b{color:var(--yellow)}
 html.anim .radar .ln:not(.vazio):not(.livre){stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.1s var(--ease)}
 html.anim .radar .pt{opacity:0;transition:opacity .45s}
-html.anim .raio.seen .ln{stroke-dashoffset:0}
+html.anim .raio.seen .ln:not(.livre){stroke-dashoffset:0}
 html.anim .raio.seen .pt{opacity:1}
 @media (max-width:600px){.radar .city,.radar .km,.radar .ring-l{display:none}.radar .hub-l{font-size:28px}.kmlist{display:block}}
 
